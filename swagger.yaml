@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: Talent API
+  version: 1.0.0
+paths:
+  /talent:
+    get:
+      summary: Get a list of talents
+      #checkov:skip=CKV_OPENAPI_5:This API does not need auth
+      responses:
+        '200':
+          description: A list of talents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Talent'
+  /talent/{id}:
+    get:
+      summary: Get a specific talent
+      #checkov:skip=CKV_OPENAPI_5:This API does not need auth
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A specific talent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Talent'
+  /talent/{id}/documents:
+    get:
+      summary: Get documents for a specific talent
+      #checkov:skip=CKV_OPENAPI_5:This API does not need auth
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+  /talent/{id}/documents/{documentId}:
+    get:
+      summary: Get a specific document for a talent
+      #checkov:skip=CKV_OPENAPI_5:This API does not need auth
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A specific document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+components:
+   #checkov:skip=CKV_OPENAPI_4:This API does not need auth
+  schemas:
+    Talent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        title:
+          description: "The talent Job title"
+          type: string  
+        profile_text:
+          description: "A short introduction to the talent"
+          type: string  
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        github:
+          type: string
+          format: uri
+          nullable: true
+        linkedin:
+          type: string
+          format: uri
+          nullable: true
+    Document:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        content:
+          type: string
