@@ -344,6 +344,57 @@
       color: var(--fg);
     }
 
+    /* ── Partner ── */
+    .partner-card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+      margin-top: 1.5rem;
+    }
+    .partner-card:hover {
+      border-color: var(--cyan);
+      background: var(--surface-hover);
+    }
+
+    .partner-avatar {
+      width: 2.75rem;
+      height: 2.75rem;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-xs);
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .partner-card:hover .partner-avatar {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .partner-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: var(--fg);
+      margin-bottom: 0.2rem;
+    }
+
+    .partner-desc {
+      font-size: var(--text-xs);
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
     /* ── Footer ── */
     footer {
       border-top: 1px solid var(--border);
@@ -407,6 +458,18 @@
     <div id="doc-list" class="doc-list">
       <div class="loading" id="docs-loading">henter dokumenter...</div>
     </div>
+  </section>
+
+  <section class="section" id="partner-section">
+    <span class="section-label">03 / Søger sammen med</span>
+    <p style="font-size:var(--text-base);line-height:1.75;color:var(--fg)">Vi er to studiekammerater der søger praktik hos Tech Chapter sammen.</p>
+    <a href="https://andreasgabel.dk" class="partner-card" target="_blank" rel="noopener">
+      <div class="partner-avatar">AG</div>
+      <div>
+        <div class="partner-name">Andreas Gabel</div>
+        <div class="partner-desc">Datamatiker-studerende — se hans portfolio ↗</div>
+      </div>
+    </a>
   </section>
 </main>
 
