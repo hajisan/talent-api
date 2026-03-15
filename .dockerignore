@@ -1,9 +1,4 @@
 .git
 .github
-src
-pom.xml
 *.md
 *.pdf
-target/maven-archiver
-target/maven-status
-target/*.original
