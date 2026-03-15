@@ -34,6 +34,9 @@ async function init() {
 
     const docs = await fetch(`/talent/${talent.id}/documents`).then(r => r.json());
     renderDocs(docs, talent.id);
+
+    const andreas = talents.find(t => t.name === 'Andreas Gabel');
+    if (andreas) renderPartnerEndpoint(andreas);
   } catch {
     document.getElementById('hero-loading').textContent = 'API ikke tilgængeligt.';
     document.getElementById('docs-loading').textContent = '';
@@ -58,11 +61,19 @@ function renderHero(t) {
   section.insertAdjacentHTML('beforeend', `
     <h1 class="hero-name">${esc(t.name)}</h1>
     <p class="hero-title">${esc(t.title)}</p>
-    ${t.profileText ? `<p class="hero-bio">${esc(t.profileText)}</p>` : ''}
+    ${t.profile_text ? `<p class="hero-bio">${esc(t.profile_text)}</p>` : ''}
     ${metaItems.length ? `<div class="hero-meta">${metaItems.map(i => `<span class="hero-meta-item">${i}</span>`).join('')}</div>` : ''}
     ${links.length    ? `<div class="hero-links">${links.join('')}</div>` : ''}
     <a class="doc-endpoint" href="/talent/${esc(t.id)}" target="_blank" rel="noopener" style="margin-top:1.25rem">GET /talent/${esc(t.id.slice(0, 8))}… ↗</a>
   `);
+}
+
+function renderPartnerEndpoint(t) {
+  const card = document.querySelector('.partner-card');
+  if (!card) return;
+  card.insertAdjacentHTML('afterend',
+    `<a class="doc-endpoint" href="/talent/${esc(t.id)}" target="_blank" rel="noopener" style="margin-top:0.75rem">GET /talent/${esc(t.id.slice(0, 8))}… ↗</a>`
+  );
 }
 
 function renderDocs(docs, talentId) {
@@ -98,7 +109,11 @@ function renderDocs(docs, talentId) {
       <span class="doc-arrow">→</span>
     `;
     el.addEventListener('click', () => openDoc(talentId, doc.id));
-    el.querySelector('.doc-endpoint').addEventListener('click', e => e.stopPropagation());
+    el.querySelector('.doc-endpoint').addEventListener('click', e => {
+      e.stopPropagation();
+      e.preventDefault();
+      openEndpoint(e.currentTarget.getAttribute('href'));
+    });
     list.appendChild(el);
   });
 }
@@ -106,10 +121,18 @@ function renderDocs(docs, talentId) {
 async function openDoc(talentId, docId) {
   try {
     const doc = await fetch(`/talent/${talentId}/documents/${docId}`).then(r => r.json());
-    document.getElementById('modal-title').textContent = doc.name;
-    document.getElementById('modal-body').innerHTML = formatContent(doc.content || '');
-    document.getElementById('modal-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    openModal(doc.name, formatContent(doc.content || ''));
+  } catch {
+    /* silently ignore */
+  }
+}
+
+async function openEndpoint(url) {
+  try {
+    const data = await fetch(url).then(r => r.json());
+    const json = JSON.stringify(data, null, 2);
+    const html = `<pre class="modal-json">${esc(json)}</pre>`;
+    openModal(url, html, url);
   } catch {
     /* silently ignore */
   }
@@ -124,6 +147,20 @@ function showToast() {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 5000);
 }
 
+function openModal(title, bodyHtml, openTabUrl = null) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = bodyHtml;
+  const tabLink = document.getElementById('modal-open-tab');
+  if (openTabUrl) {
+    tabLink.href = openTabUrl;
+    tabLink.hidden = false;
+  } else {
+    tabLink.hidden = true;
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
@@ -135,6 +172,13 @@ document.getElementById('modal-overlay').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeModal();
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+document.addEventListener('click', e => {
+  const link = e.target.closest('.doc-endpoint');
+  if (!link) return;
+  e.preventDefault();
+  openEndpoint(link.getAttribute('href'));
+});
 
 init();
 

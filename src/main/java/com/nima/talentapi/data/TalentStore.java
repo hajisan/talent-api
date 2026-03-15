@@ -62,8 +62,9 @@ public class TalentStore {
                     new Document(
                             "doc2-0000-0000-0000-000000000002",
                             "CV",
-                            "UDDANNELSE: Datamatiker, Erhvervsakademi København (KEA), 2024–2027. " +
-                                    "TECH STACK – Sprog: Java, JavaScript, TypeScript, Python, Ruby, Bash. " +
+                            "UDDANNELSE: Datamatiker, Erhvervsakademi København (EK), 2024–2027. " +
+                                    "TECH STACK:" +
+                                    "Sprog: Java, JavaScript, TypeScript, Python, Ruby, Bash. " +
                                     "Frameworks & frontend: Spring Boot, Spring Security, Spring JPA, FastAPI, Astro, Tailwind CSS, React. " +
                                     "DevOps & infrastruktur: Docker, Docker Compose, Watchtower, GitHub Actions CI/CD, nginx, " +
                                     "Linux (Ubuntu 24.04), Tailscale VPN, Cloudflare Tunnel, UFW, iptables/netfilter, Fail2ban, SSH key-only, cron jobs. " +

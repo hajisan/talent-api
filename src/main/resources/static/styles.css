@@ -180,8 +180,13 @@ main {
   color: inherit;
 }
 .doc-item:first-child { border-top: 1px solid var(--border); }
+.doc-item:last-child  { border-bottom: none; }
 .doc-item:hover .doc-name { color: var(--cyan); }
 .doc-item:hover .doc-num  { color: var(--fg); }
+
+.doc-item:has(.doc-endpoint:hover) .doc-name  { color: var(--fg); }
+.doc-item:has(.doc-endpoint:hover) .doc-num   { color: var(--muted); }
+.doc-item:has(.doc-endpoint:hover) .doc-arrow { color: var(--muted); transform: none; }
 
 .doc-num {
   font-size: var(--text-xs);
@@ -298,6 +303,23 @@ main {
   line-height: 1.1;
 }
 
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.modal-open-tab {
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.modal-open-tab:hover { opacity: 0.7; }
+
 .modal-close {
   background: none;
   border: 1px solid var(--border);
@@ -325,6 +347,15 @@ main {
   text-transform: uppercase;
   color: var(--accent);
   margin-top: 0.5rem;
+}
+
+.modal-json {
+  font-family: 'DM Mono', monospace;
+  font-size: var(--text-xs);
+  color: var(--fg);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .modal-para {
