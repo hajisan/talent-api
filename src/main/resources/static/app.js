@@ -115,9 +115,19 @@ async function openDoc(talentId, docId) {
   }
 }
 
+let toastTimer = null;
+
+function showToast() {
+  const toast = document.getElementById('toast');
+  clearTimeout(toastTimer);
+  toast.classList.add('show');
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 5000);
+}
+
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
+  showToast();
 }
 
 document.getElementById('modal-close').addEventListener('click', closeModal);
@@ -127,3 +137,24 @@ document.getElementById('modal-overlay').addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 init();
+
+// Toast close button
+document.getElementById('toast-close').addEventListener('click', () => {
+  clearTimeout(toastTimer);
+  document.getElementById('toast').classList.remove('show');
+});
+
+// Scroll banner — show once when footer enters viewport
+let bannerShown = false;
+const scrollBanner = document.getElementById('scroll-banner');
+const bannerObserver = new IntersectionObserver(entries => {
+  if (bannerShown || !entries[0].isIntersecting) return;
+  bannerShown = true;
+  scrollBanner.classList.add('show');
+}, { threshold: 0.5 });
+bannerObserver.observe(document.querySelector('footer'));
+
+document.getElementById('scroll-banner-close').addEventListener('click', () => {
+  scrollBanner.classList.remove('show');
+});
+
