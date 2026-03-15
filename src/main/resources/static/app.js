@@ -64,7 +64,8 @@ function renderHero(t) {
     ${t.profile_text ? `<p class="hero-bio">${esc(t.profile_text)}</p>` : ''}
     ${metaItems.length ? `<div class="hero-meta">${metaItems.map(i => `<span class="hero-meta-item">${i}</span>`).join('')}</div>` : ''}
     ${links.length    ? `<div class="hero-links">${links.join('')}</div>` : ''}
-    <a class="doc-endpoint" href="/talent/${esc(t.id)}" target="_blank" rel="noopener" style="margin-top:1.25rem">GET /talent/${esc(t.id.slice(0, 8))}… ↗</a>
+    <a class="doc-endpoint" href="/talent" style="margin-top:1.25rem">GET /talent ↗</a>
+    <a class="doc-endpoint" href="/talent/${esc(t.id)}" style="margin-top:0.4rem">GET /talent/${esc(t.id.slice(0, 8))}… ↗</a>
   `);
 }
 
@@ -151,11 +152,14 @@ function openModal(title, bodyHtml, openTabUrl = null) {
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-body').innerHTML = bodyHtml;
   const tabLink = document.getElementById('modal-open-tab');
+  const modal = document.querySelector('.modal');
   if (openTabUrl) {
     tabLink.href = openTabUrl;
     tabLink.hidden = false;
+    modal.classList.add('modal--api');
   } else {
     tabLink.hidden = true;
+    modal.classList.remove('modal--api');
   }
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -188,17 +192,4 @@ document.getElementById('toast-close').addEventListener('click', () => {
   document.getElementById('toast').classList.remove('show');
 });
 
-// Scroll banner — show once when footer enters viewport
-let bannerShown = false;
-const scrollBanner = document.getElementById('scroll-banner');
-const bannerObserver = new IntersectionObserver(entries => {
-  if (bannerShown || !entries[0].isIntersecting) return;
-  bannerShown = true;
-  scrollBanner.classList.add('show');
-}, { threshold: 0.5 });
-bannerObserver.observe(document.querySelector('footer'));
-
-document.getElementById('scroll-banner-close').addEventListener('click', () => {
-  scrollBanner.classList.remove('show');
-});
 
