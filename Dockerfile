@@ -10,7 +10,7 @@ RUN mvn package -DskipTests -q
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 RUN addgroup -S app && adduser -S app -G app
-COPY --from=build /app/target/talent-api-1.0.0.jar app.jar
+COPY --from=build /app/target/hello-tech-chapter-1.0.0.jar app.jar
 RUN chown app:app app.jar
 USER app
 EXPOSE 8080

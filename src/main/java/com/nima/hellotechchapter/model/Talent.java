@@ -1,4 +1,4 @@
-package com.nima.talentapi.model;
+package com.nima.hellotechchapter.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

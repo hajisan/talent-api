@@ -1,4 +1,4 @@
-package com.nima.talentapi.model;
+package com.nima.hellotechchapter.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

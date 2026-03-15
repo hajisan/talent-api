@@ -1,8 +1,8 @@
-package com.nima.talentapi.controller;
+package com.nima.hellotechchapter.controller;
 
-import com.nima.talentapi.data.TalentStore;
-import com.nima.talentapi.model.Document;
-import com.nima.talentapi.model.Talent;
+import com.nima.hellotechchapter.data.TalentStore;
+import com.nima.hellotechchapter.model.Document;
+import com.nima.hellotechchapter.model.Talent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

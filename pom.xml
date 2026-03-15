@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>com.nima</groupId>
-    <artifactId>talent-api</artifactId>
+    <artifactId>hello-tech-chapter</artifactId>
     <version>1.0.0</version>
-    <name>talent-api</name>
+    <name>hello-tech-chapter</name>
 
     <properties>
         <java.version>21</java.version>
