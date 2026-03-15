@@ -11,7 +11,8 @@ import java.util.Optional;
 @Repository
 public class TalentStore {
 
-    private static final String NIMA_ID = "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
+    private static final String NIMA_ID    = "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
+    private static final String ANDREAS_ID = "b2c3d4e5-f6a7-8901-bcde-f12345678901";
 
     private final List<Talent> talents = List.of(
             new Talent(
@@ -28,12 +29,23 @@ public class TalentStore {
                     "Danmark",
                     "https://github.com/hajisan",
                     "https://www.linkedin.com/in/nima-salami-41197744/"
+            ),
+            new Talent(
+                    ANDREAS_ID,
+                    "Andreas Gabel",
+                    "Datamatiker-studerende | DevOps & Backend",
+                    "4. semester datamatiker på EK med fokus på DevOps, backend-udvikling og automatisering. Jeg bygger og drifter min egen cloud-native platform på andreasgabel.dk — Spring Boot, Docker, GitHub Actions CI/CD/CD/CF og Nginx på en DigitalOcean droplet. Fire projekter kører i produktion bag én reverse proxy med HTTPS, komplet med JaCoCo, Checkstyle, SpotBugs, Trivy og frontend linting. Har baggrund fra IT-operations hos Københavns Kommune, hvor jeg automatiserer drift af Linux-baserede borger-PC'er.",
+                    "andreassgabel@hotmail.com",
+                    null,
+                    "København",
+                    "Danmark",
+                    "https://github.com/Gabel1998",
+                    "https://www.linkedin.com/in/andreas-søgaard-gabel-758991133"
             )
     );
 
     private final Map<String, List<Document>> documents = Map.of(
             NIMA_ID, List.of(
-
                     new Document(
                             "doc1-0000-0000-0000-000000000001",
                             "Motivationsbrev",
