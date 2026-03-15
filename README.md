@@ -1,6 +1,8 @@
-# Talent API
+# Hello Tech Chapter
 
-REST API implementeret som del af Tech Chapter's praktikant-udfordring.
+REST API bygget som praktikansøgning til Tech Chapter 2026.
+
+Serverer talentprofiler og dokumenter over et JSON API med Swagger UI og en statisk frontend der henter dynamisk fra API'et.
 
 Bygget med **Java 21 + Spring Boot 3**, dokumenteret med **Swagger UI** og deployeret via **GitHub Actions → GHCR**.
 
@@ -8,7 +10,7 @@ Bygget med **Java 21 + Spring Boot 3**, dokumenteret med **Swagger UI** og deplo
 
 - Java 21 + Spring Boot 3.5
 - springdoc-openapi (Swagger UI)
-- Docker (multi-stage build, non-root user, HEALTHCHECK)
+- Docker (multi-stage build, non-root user, HEALTHCHECK, multi-platform)
 - GitHub Actions CI/CD → GHCR
 
 ## Kør med Docker
@@ -37,6 +39,6 @@ docker run -p 8080:8080 ghcr.io/hajisan/hello-tech-chapter:latest
 
 ```bash
 mvn package -DskipTests
-docker build -t talent-api .
-docker run -p 8080:8080 talent-api
+docker build -t hello-tech-chapter .
+docker run -p 8080:8080 hello-tech-chapter
 ```
