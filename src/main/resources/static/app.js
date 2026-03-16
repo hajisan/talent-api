@@ -6,9 +6,17 @@ function esc(s) {
     .replace(/"/g, '&quot;');
 }
 
+function linkify(html) {
+  return html.replace(/https?:\/\/[^\s<>"]+/g, url => {
+    const stripped = url.replace(/[.,;:!?)]+$/, '');
+    const tail = url.slice(stripped.length);
+    return `<a class="modal-link" href="${stripped}" target="_blank" rel="noopener">${stripped} ↗</a>${tail}`;
+  });
+}
+
 function formatContent(text) {
   const chunks = text
-    .replace(/\.\s+(LINK|TYPE|REPO|BESKRIVELSE|STACK|HVAD JEG LÆRTE|UDDANNELSE|TECH STACK|ERHVERVSERFARING):/g, '.\n\n$1:')
+    .replace(/([.)]\s*)(LINK|TYPE|REPO|BESKRIVELSE|STACK|HVAD JEG LÆRTE|UDDANNELSE|TECH STACK|ERHVERVSERFARING):/g, '$1\n\n$2:')
     .split('\n\n')
     .map(s => s.trim())
     .filter(Boolean);
@@ -20,10 +28,19 @@ function formatContent(text) {
       const label = chunk.slice(0, colon + 1);
       const rest  = chunk.slice(colon + 1).trim();
       return `<div class="modal-section-label">${esc(label)}</div>`
-        + (rest ? `<p class="modal-para">${esc(rest)}</p>` : '');
+        + (rest ? `<p class="modal-para">${linkify(esc(rest))}</p>` : '');
     }
-    return `<p class="modal-para">${esc(chunk)}</p>`;
+    return `<p class="modal-para">${linkify(esc(chunk))}</p>`;
   }).join('\n');
+}
+
+function openCv() {
+  const body = `
+    <p class="modal-para" style="color:var(--muted)">Download mit CV som PDF.</p>
+    <a class="cv-download" href="/cv.pdf" download="Nima_Salami_CV.pdf">Download CV ↓</a>
+    <embed src="/cv.pdf#pagemode=none&view=FitH" type="application/pdf" style="width:100%;height:60vh;margin-top:1.5rem;border:1px solid var(--border)">
+  `;
+  openModal('CV – Nima Salami', body);
 }
 
 async function init() {
@@ -37,7 +54,8 @@ async function init() {
 
     const andreas = talents.find(t => t.name === 'Andreas Gabel');
     if (andreas) renderPartnerEndpoint(andreas);
-  } catch {
+  } catch (e) {
+    console.error('Init fejlede:', e);
     document.getElementById('hero-loading').textContent = 'API ikke tilgængeligt.';
     document.getElementById('docs-loading').textContent = '';
   }
@@ -63,7 +81,10 @@ function renderHero(t) {
     <p class="hero-title">${esc(t.title)}</p>
     ${t.profile_text ? `<p class="hero-bio">${esc(t.profile_text)}</p>` : ''}
     ${metaItems.length ? `<div class="hero-meta">${metaItems.map(i => `<span class="hero-meta-item">${i}</span>`).join('')}</div>` : ''}
-    ${links.length    ? `<div class="hero-links">${links.join('')}</div>` : ''}
+    <div class="hero-links">
+      ${links.join('')}
+      <button class="cv-btn" onclick="openCv()">Downlaod CV ↓</button>
+    </div>
     <a class="doc-endpoint" href="/talent" style="margin-top:1.25rem">GET /talent ↗</a>
     <a class="doc-endpoint" href="/talent/${esc(t.id)}" style="margin-top:0.4rem">GET /talent/${esc(t.id.slice(0, 8))}… ↗</a>
   `);
@@ -117,25 +138,39 @@ function renderDocs(docs, talentId) {
     });
     list.appendChild(el);
   });
+
+  const section = document.getElementById('docs-section');
+  section.insertAdjacentHTML('beforeend',
+    `<div style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem 0 0;margin-bottom:-1.5rem">
+       <p style="font-size:var(--text-xs);color:var(--muted);letter-spacing:0.08em">Se alle dokumenter som rå JSON via API'et:</p>
+       <a class="doc-endpoint" href="/talent/${esc(talentId)}/documents" style="margin-top:0.4rem">GET /talent/${talentId.slice(0, 8)}…/documents ↗</a>
+     </div>`
+  );
 }
 
 async function openDoc(talentId, docId) {
   try {
-    const doc = await fetch(`/talent/${talentId}/documents/${docId}`).then(r => r.json());
+    const r = await fetch(`/talent/${talentId}/documents/${docId}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const doc = await r.json();
     openModal(doc.name, formatContent(doc.content || ''));
-  } catch {
-    /* silently ignore */
+  } catch (e) {
+    console.error('Kunne ikke hente dokument:', e);
+    openModal('Fejl', '<p class="modal-para">Dokumentet kunne ikke hentes.</p>');
   }
 }
 
 async function openEndpoint(url) {
   try {
-    const data = await fetch(url).then(r => r.json());
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
     const json = JSON.stringify(data, null, 2);
     const html = `<pre class="modal-json">${esc(json)}</pre>`;
     openModal(url, html, url);
-  } catch {
-    /* silently ignore */
+  } catch (e) {
+    console.error('Kunne ikke hente endpoint:', e);
+    openModal('Fejl', '<p class="modal-para">Endpoint kunne ikke hentes.</p>');
   }
 }
 

@@ -86,7 +86,7 @@ main {
   max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
-  padding: 6rem 1.5rem 4rem;
+  padding: 6rem 1.5rem 0;
 }
 
 /* ── Sections ── */
@@ -156,14 +156,46 @@ main {
   flex-wrap: wrap;
 }
 
-.hero-link {
-  font-size: var(--text-sm);
+.cv-btn {
+  background: none;
+  border: none;
   color: var(--cyan);
-  text-decoration: none;
+  font-family: 'DM Mono', monospace;
+  font-size: var(--text-sm);
   letter-spacing: 0.08em;
+  padding: 0;
+  cursor: pointer;
   transition: opacity 0.2s;
 }
-.hero-link:hover { opacity: 0.7; }
+.cv-btn:hover { opacity: 0.7; }
+
+.cv-download {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  padding: 0.5rem 1rem;
+  transition: background 0.2s, color 0.2s;
+}
+.cv-download:hover { background: var(--cyan); color: var(--bg); }
+
+.hero-link,
+.modal-link {
+  color: var(--cyan);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.hero-link:hover,
+.modal-link:hover { opacity: 0.7; }
+
+.hero-link {
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+}
 
 /* ── Document list ── */
 .doc-list { display: flex; flex-direction: column; }
@@ -180,7 +212,6 @@ main {
   color: inherit;
 }
 .doc-item:first-child { border-top: 1px solid var(--border); }
-.doc-item:last-child  { border-bottom: none; }
 .doc-item:hover .doc-name { color: var(--cyan); }
 .doc-item:hover .doc-num  { color: var(--fg); }
 
@@ -470,9 +501,9 @@ footer {
 /* ── Toast (post-modal nudge) ── */
 .toast {
   position: fixed;
-  bottom: 2rem;
+  top: 1rem;
   left: 50%;
-  transform: translateX(-50%) translateY(calc(100% + 2rem));
+  transform: translateX(-50%) translateY(calc(-100% - 2rem));
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -483,7 +514,7 @@ footer {
   letter-spacing: 0.08em;
   white-space: nowrap;
   z-index: 400;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s;
+  transition: transform 0.35s cubic-bezier(0.42, 0, 1, 1), opacity 0.35s;
   opacity: 0;
   pointer-events: none;
 }
