@@ -56,3 +56,6 @@ mvn package -DskipTests
 docker build -t hello-tech-chapter .
 docker run -p 8080:8080 hello-tech-chapter
 ```
+
+## Søger sammen
+Søger praktik hos Tech Chapter sammen med Andreas Gabel - https://andreasgabel.dk/
