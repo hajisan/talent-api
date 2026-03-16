@@ -10,8 +10,9 @@ Bygget med **Java 21 + Spring Boot 3**, dokumenteret med **Swagger UI** og deplo
 
 - Java 21 + Spring Boot 3.5
 - springdoc-openapi (Swagger UI)
+- JUnit 5 + Spring Boot Test (MockMvc integration tests)
 - Docker (multi-stage build, non-root user, HEALTHCHECK, multi-platform)
-- GitHub Actions CI/CD → GHCR
+- GitHub Actions CI/CD → GHCR (test gate før build)
 
 ## Kør med Docker
 
@@ -25,6 +26,7 @@ docker run -p 8080:8080 ghcr.io/hajisan/hello-tech-chapter:latest
 | `http://localhost:8080` | Frontend |
 | `http://localhost:8080/swagger-ui.html` | Swagger UI |
 | `http://localhost:8080/api-docs` | OpenAPI JSON |
+| `http://localhost:8080/actuator/health` | Health check |
 
 ## Endpoints
 
@@ -38,6 +40,7 @@ docker run -p 8080:8080 ghcr.io/hajisan/hello-tech-chapter:latest
 ## Byg lokalt
 
 ```bash
+mvn test
 mvn package -DskipTests
 docker build -t hello-tech-chapter .
 docker run -p 8080:8080 hello-tech-chapter
